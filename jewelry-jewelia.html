@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEWELIA — Fine Jewelry</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A96E;
+  --gold-light: #D4B878;
+  --navy: #1A1A2E;
+  --ivory: #F5F0EB;
+  --warm: #F8F6F3;
+  --charcoal: #2D2D2D;
+  --gray: #7A7A7A;
+  --success: #2E8B57;
+  --error: #C0392B;
+  --sale: #B5445F;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+::selection { background: rgba(201,169,110,0.25); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 3px; }
+
+body {
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  color: var(--navy);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; transition: color 0.25s; }
+button { font-family: inherit; cursor: pointer; }
+img { display: block; max-width: 100%; }
+
+/* ══════════════════ ANIMATIONS ══════════════════ */
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:translateY(0) } }
+@keyframes slideDown { from { opacity:0; transform:translateY(-10px) } to { opacity:1; transform:translateY(0) } }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+/* ══════════════════ ANNOUNCEMENT BAR ══════════════════ */
+.announcement-bar {
+  background: var(--navy);
+  color: #fff;
+  text-align: center;
+  padding: 10px 16px;
+  font-size: 11.5px;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+}
+.announcement-bar .dot { color: var(--gold); margin: 0 8px; }
+
+/* ══════════════════ GOLD TICKER ══════════════════ */
+.gold-ticker {
+  background: #0a0a0a;
+  padding: 7px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1a1a1a;
+  font-size: 12px;
+  color: #999;
+}
+.ticker-left { display: flex; align-items: center; gap: 8px; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4CAF50; animation: pulse 2s infinite; }
+.live-label { color: var(--gold); font-weight: 600; font-size: 10px; letter-spacing: 1px; }
+.ticker-sep { color: #333; margin: 0 8px; }
+.ticker-right { display: flex; gap: 22px; }
+.ticker-right a { color: #888; font-size: 11.5px; transition: color 0.2s; }
+.ticker-right a:hover { color: var(--gold); }
+
+/* ══════════════════ HEADER ══════════════════ */
+.main-header {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 24px rgba(0,0,0,0.04);
+}
+.header-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 15px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left { display: flex; align-items: center; gap: 22px; }
+.hamburger {
+  background: none; border: none; padding: 4px; display: flex;
+  flex-direction: column; gap: 5px; cursor: pointer;
+}
+.hamburger span { display: block; width: 20px; height: 1.5px; background: var(--navy); transition: all 0.3s; border-radius: 1px; }
+.logo { user-select: none; cursor: pointer; }
+.logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 30px; font-weight: 700; letter-spacing: 5px; color: var(--navy);
+}
+.logo-sub {
+  font-size: 7.5px; letter-spacing: 6px; color: var(--gold);
+  text-transform: uppercase; text-align: center; margin-top: -2px;
+}
+.main-nav { display: flex; gap: 32px; }
+.main-nav a {
+  font-size: 13px; font-weight: 500; letter-spacing: 0.3px;
+  color: var(--navy); padding: 6px 0;
+  border-bottom: 2px solid transparent; transition: all 0.3s;
+}
+.main-nav a:hover { border-bottom-color: var(--gold); }
+.header-actions { display: flex; align-items: center; gap: 24px; }
+.icon-btn {
+  background: none; border: none; position: relative; padding: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.icon-btn svg { width: 20px; height: 20px; stroke: var(--navy); stroke-width: 1.8; fill: none; }
+.badge {
+  position: absolute; top: -7px; right: -9px;
+  width: 17px; height: 17px; border-radius: 50%;
+  font-size: 9px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.badge-red { background: var(--error); }
+.badge-gold { background: var(--gold); }
+
+/* Search bar */
+.search-bar {
+  background: #fff; border-top: 1px solid #f0f0f0;
+  padding: 18px 32px; animation: slideDown 0.3s ease;
+  display: none;
+}
+.search-bar.active { display: block; }
+.search-bar-inner {
+  max-width: 640px; margin: 0 auto; position: relative;
+}
+.search-bar input {
+  width: 100%; padding: 14px 52px 14px 20px;
+  border: 1.5px solid var(--gold); border-radius: 6px;
+  font-size: 14px; outline: none; background: #fafafa;
+  font-family: inherit;
+}
+.search-bar input::placeholder { color: #bbb; }
+.search-icon-right {
+  position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  color: var(--gold);
+}
+
+/* ══════════════════ HERO ══════════════════ */
+.hero {
+  position: relative; height: 580px; overflow: hidden;
+}
+.hero-slide {
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity 1.4s ease;
+}
+.hero-slide.active { opacity: 1; z-index: 1; }
+.hero-slide img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+}
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1320px; margin: 0 auto; padding: 0 60px;
+  height: 100%; display: flex; align-items: center;
+}
+.hero-text { max-width: 560px; }
+.hero-tag {
+  font-size: 10.5px; letter-spacing: 6px; color: var(--gold);
+  text-transform: uppercase; font-weight: 500; margin-bottom: 24px;
+}
+.hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 56px; font-weight: 700; color: #fff;
+  line-height: 1.1; margin-bottom: 22px;
+  text-shadow: 0 2px 40px rgba(0,0,0,0.3);
+  white-space: pre-line;
+}
+.hero-subtitle {
+  font-size: 16px; color: rgba(255,255,255,0.65);
+  line-height: 1.7; margin-bottom: 38px; max-width: 440px;
+}
+.hero-buttons { display: flex; gap: 14px; }
+.btn-gold {
+  background: var(--gold); color: #fff; border: none;
+  padding: 16px 42px; font-size: 12px; font-weight: 600;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  border-radius: 3px; transition: all 0.35s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-gold:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(201,169,110,0.4);
+}
+.btn-ghost {
+  background: rgba(255,255,255,0.07); color: #fff;
+  border: 1px solid rgba(255,255,255,0.22);
+  padding: 16px 42px; font-size: 12px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  border-radius: 3px; backdrop-filter: blur(4px);
+  transition: all 0.3s;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.15); }
+
+/* Hero dots */
+.hero-dots {
+  position: absolute; bottom: 30px; left: 50%;
+  transform: translateX(-50%); display: flex; gap: 12px; z-index: 3;
+}
+.hero-dot {
+  height: 10px; border-radius: 5px; border: none;
+  cursor: pointer; transition: all 0.5s ease;
+  background: rgba(255,255,255,0.3); width: 10px;
+}
+.hero-dot.active { width: 34px; background: var(--gold); }
+
+/* Hero arrows */
+.hero-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 3; background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 50%; width: 50px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; backdrop-filter: blur(4px);
+  transition: all 0.3s; color: #fff;
+}
+.hero-arrow:hover { background: rgba(255,255,255,0.18); }
+.hero-arrow.left { left: 26px; }
+.hero-arrow.right { right: 26px; }
+
+/* ══════════════════ TRUST BAR ══════════════════ */
+.trust-bar {
+  background: #fff; border-bottom: 1px solid #f0f0f0; padding: 24px 0;
+}
+.trust-bar-inner {
+  max-width: 1320px; margin: 0 auto; padding: 0 32px;
+  display: flex; justify-content: space-around; align-items: center;
+}
+.trust-item { display: flex; align-items: center; gap: 14px; }
+.trust-icon {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--ivory); display: flex;
+  align-items: center; justify-content: center;
+  border: 1px solid rgba(201,169,110,0.2);
+  color: var(--gold);
+}
+.trust-text { font-size: 13px; font-weight: 600; color: var(--navy); letter-spacing: 0.2px; }
+.trust-sub { font-size: 11px; color: #999; margin-top: 2px; }
+
+/* ══════════════════ SECTIONS ══════════════════ */
+.section { padding: 72px 32px; }
+.section-center { text-align: center; margin-bottom: 52px; }
+.section-tag {
+  font-size: 10.5px; letter-spacing: 6px; color: var(--gold);
+  text-transform: uppercase; font-weight: 500;
+}
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 36px; font-weight: 600; color: var(--navy); margin-top: 12px;
+}
+.section-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-end; margin-bottom: 52px;
+}
+.view-all {
+  font-size: 13px; color: var(--gold); font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+  letter-spacing: 0.5px; transition: gap 0.3s;
+}
+.view-all:hover { gap: 10px; }
+.container { max-width: 1320px; margin: 0 auto; }
+
+/* ══════════════════ CATEGORIES ══════════════════ */
+.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.cat-card {
+  border-radius: 14px; overflow: hidden; cursor: pointer;
+  border: 1px solid #f0f0f0; transition: all 0.4s;
+  background: #fff;
+}
+.cat-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-7px);
+  box-shadow: 0 14px 44px rgba(201,169,110,0.15);
+}
+.cat-img {
+  height: 190px; overflow: hidden; position: relative;
+}
+.cat-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.65s ease;
+}
+.cat-card:hover .cat-img img { transform: scale(1.08); }
+.cat-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 35%, rgba(26,26,46,0.45) 100%);
+}
+.cat-info {
+  padding: 16px 20px; display: flex;
+  justify-content: space-between; align-items: center;
+}
+.cat-name { font-size: 15px; font-weight: 600; color: var(--navy); }
+.cat-count { font-size: 11px; color: #999; margin-top: 3px; }
+.cat-arrow { color: #ddd; transition: color 0.3s; }
+.cat-card:hover .cat-arrow { color: var(--gold); }
+
+/* ══════════════════ COLLECTIONS ══════════════════ */
+.coll-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.coll-card {
+  border-radius: 16px; overflow: hidden; cursor: pointer;
+  position: relative; height: 300px; transition: all 0.4s;
+}
+.coll-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 18px 52px rgba(0,0,0,0.12);
+}
+.coll-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.65s;
+}
+.coll-card:hover img { transform: scale(1.05); }
+.coll-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(26,26,46,0.02) 0%, rgba(26,26,46,0.78) 100%);
+}
+.coll-content {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 26px 22px;
+}
+.coll-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 5px;
+}
+.coll-desc { font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 14px; }
+.coll-link {
+  font-size: 11.5px; font-weight: 600; color: var(--gold);
+  letter-spacing: 1px; display: flex; align-items: center; gap: 5px;
+}
+
+/* ══════════════════ PRODUCTS ══════════════════ */
+.prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.prod-card {
+  background: #fff; border-radius: 12px; overflow: hidden;
+  border: 1px solid #f0f0f0; transition: all 0.35s; cursor: pointer;
+}
+.prod-card:hover {
+  border-color: rgba(201,169,110,0.3);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.08);
+  transform: translateY(-6px);
+}
+.prod-img-wrap {
+  position: relative; height: 275px; overflow: hidden; background: var(--warm);
+}
+.prod-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.65s ease;
+}
+.prod-card:hover .prod-img-wrap img { transform: scale(1.06); }
+.prod-badge {
+  position: absolute; top: 14px; left: 14px;
+  color: #fff; font-size: 10px; font-weight: 600;
+  padding: 5px 13px; border-radius: 5px;
+  letter-spacing: 0.8px; text-transform: uppercase;
+}
+.badge-bestseller { background: var(--navy); }
+.badge-new { background: var(--success); }
+.badge-trending { background: var(--sale); }
+.badge-premium { background: var(--gold); }
+.wish-btn {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(255,255,255,0.95); border: none;
+  border-radius: 50%; width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  transition: all 0.25s; cursor: pointer;
+}
+.wish-btn:hover { transform: scale(1.12); }
+.wish-btn svg { width: 17px; height: 17px; stroke-width: 1.8; }
+.wish-btn.active svg { fill: var(--error); stroke: var(--error); }
+.prod-hover-actions {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(26,26,46,0.88); backdrop-filter: blur(6px);
+  padding: 13px 14px; display: flex; gap: 8px;
+  justify-content: center; animation: fadeUp 0.25s ease;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.prod-card:hover .prod-hover-actions { opacity: 1; pointer-events: auto; }
+.btn-add-cart {
+  background: var(--gold); color: #fff; border: none;
+  padding: 10px 26px; font-size: 11px; font-weight: 600;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  border-radius: 3px; transition: background 0.2s;
+}
+.btn-add-cart:hover { background: var(--gold-light); }
+.btn-quick-view {
+  background: transparent; color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 10px 26px; font-size: 11px; font-weight: 500;
+  text-transform: uppercase; border-radius: 3px; letter-spacing: 1.2px;
+}
+.prod-info { padding: 20px 20px 24px; }
+.prod-metal {
+  font-size: 10.5px; color: #999; text-transform: uppercase;
+  letter-spacing: 1.2px; margin-bottom: 6px;
+}
+.prod-name {
+  font-size: 15px; font-weight: 600; color: var(--navy);
+  line-height: 1.35; margin-bottom: 12px;
+}
+.prod-rating {
+  display: flex; align-items: center; gap: 7px; margin-bottom: 12px;
+}
+.rating-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #f8f7f0; padding: 3px 9px; border-radius: 4px;
+}
+.rating-badge .star { color: var(--gold); font-size: 11px; }
+.rating-num { font-size: 11.5px; font-weight: 700; color: var(--navy); }
+.rating-count { font-size: 11px; color: #bbb; }
+.prod-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.price-current { font-size: 19px; font-weight: 700; color: var(--navy); }
+.price-old { font-size: 13px; color: #bbb; text-decoration: line-through; }
+.price-off {
+  font-size: 11px; color: var(--success); font-weight: 600;
+  background: #eaf7ef; padding: 2px 8px; border-radius: 3px;
+}
+.prod-emi {
+  font-size: 10.5px; color: #aaa; margin-top: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.emi-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--gold); display: inline-block;
+}
+
+/* ══════════════════ TRY AT HOME ══════════════════ */
+.try-home {
+  padding: 0 32px 72px; max-width: 1320px; margin: 0 auto;
+}
+.try-home-card {
+  border-radius: 22px; overflow: hidden; position: relative; height: 360px;
+}
+.try-home-card img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.try-home-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(26,26,46,0.94) 0%, rgba(26,26,46,0.8) 45%, rgba(26,26,46,0.15) 100%);
+}
+.try-home-content {
+  position: absolute; inset: 0; display: flex;
+  align-items: center; padding: 0 68px;
+}
+.try-home-text { max-width: 480px; }
+.try-home-text h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 40px; font-weight: 700; color: #fff;
+  line-height: 1.2; margin: 14px 0 20px;
+}
+.try-home-text p {
+  font-size: 14.5px; color: rgba(255,255,255,0.55);
+  line-height: 1.75; margin-bottom: 34px; max-width: 380px;
+}
+
+/* ══════════════════ REVIEWS ══════════════════ */
+.review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.review-card {
+  background: #fff; border-radius: 16px; padding: 34px 28px;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.04);
+  border: 1px solid #f5f5f5; transition: all 0.3s;
+}
+.review-card:hover {
+  box-shadow: 0 10px 36px rgba(0,0,0,0.06);
+  transform: translateY(-4px);
+}
+.review-stars { display: flex; gap: 2px; margin-bottom: 20px; color: var(--gold); font-size: 14px; }
+.review-text {
+  font-size: 14.5px; color: #555; line-height: 1.8;
+  margin-bottom: 26px; font-style: italic;
+}
+.review-author { display: flex; justify-content: space-between; align-items: center; }
+.review-person { display: flex; align-items: center; gap: 14px; }
+.review-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  object-fit: cover; border: 2px solid var(--ivory);
+}
+.review-name { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.review-verified { font-size: 10.5px; color: var(--success); font-weight: 500; margin-top: 2px; }
+.review-location { font-size: 11px; color: #bbb; display: flex; align-items: center; gap: 5px; }
+
+/* ══════════════════ NEWSLETTER ══════════════════ */
+.newsletter { padding: 76px 32px; background: #fff; }
+.newsletter-inner { max-width: 580px; margin: 0 auto; text-align: center; }
+.newsletter-inner h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 32px; font-weight: 600; color: var(--navy); margin: 12px 0 14px;
+}
+.newsletter-inner p { font-size: 14px; color: #999; margin-bottom: 34px; line-height: 1.6; }
+.newsletter-form {
+  display: flex; border-radius: 6px; overflow: hidden;
+  border: 1.5px solid var(--gold);
+}
+.newsletter-form input {
+  flex: 1; padding: 16px 20px; border: none;
+  font-size: 14px; outline: none; background: #fafafa;
+  font-family: inherit;
+}
+.newsletter-form button {
+  background: var(--gold); color: #fff; border: none;
+  padding: 16px 34px; font-size: 12px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  white-space: nowrap; transition: background 0.2s;
+}
+.newsletter-form button:hover { background: var(--gold-light); }
+.newsletter-disclaimer { font-size: 11px; color: #ccc; margin-top: 14px; }
+
+/* ══════════════════ FOOTER ══════════════════ */
+.footer {
+  background: var(--navy); color: rgba(255,255,255,0.5);
+  padding: 68px 32px 40px;
+}
+.footer-inner { max-width: 1320px; margin: 0 auto; }
+.footer-grid {
+  display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr 1fr;
+  gap: 52px; margin-bottom: 52px;
+}
+.footer-brand .logo-text { color: #fff; font-size: 28px; margin-bottom: 6px; }
+.footer-brand .logo-sub { color: var(--gold); margin-bottom: 20px; text-align: left; }
+.footer-brand p { font-size: 13px; line-height: 1.85; max-width: 280px; margin-bottom: 26px; }
+.footer-social { display: flex; gap: 10px; }
+.social-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  transition: all 0.3s; cursor: pointer;
+}
+.social-icon:hover { border-color: var(--gold); color: var(--gold); }
+.footer-col h4 {
+  color: var(--gold); font-size: 12px; font-weight: 600;
+  letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 22px;
+}
+.footer-col a {
+  display: block; color: rgba(255,255,255,0.4);
+  font-size: 13px; margin-bottom: 13px; transition: all 0.25s;
+}
+.footer-col a:hover { color: var(--gold); padding-left: 5px; }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 28px; display: flex;
+  justify-content: space-between; align-items: center;
+}
+.footer-copy { font-size: 11.5px; color: rgba(255,255,255,0.3); }
+.payment-methods { display: flex; gap: 8px; }
+.payment-badge {
+  font-size: 10.5px; color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.04); padding: 6px 14px;
+  border-radius: 4px; border: 1px solid rgba(255,255,255,0.07);
+}
+
+/* ══════════════════ SVG ICONS ══════════════════ */
+.svg-icon { display: inline-block; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ ANNOUNCEMENT BAR ═══════════ -->
+<div class="announcement-bar">
+  <span style="color:var(--gold)">✦</span> FREE SHIPPING ON ALL ORDERS
+  <span class="dot">•</span> 30-DAY EASY RETURNS
+  <span class="dot">•</span> LIFETIME EXCHANGE
+  <span style="color:var(--gold)"> ✦</span>
+</div>
+
+<!-- ═══════════ GOLD TICKER ═══════════ -->
+<div class="gold-ticker">
+  <div class="ticker-left">
+    <span class="live-dot"></span>
+    <span class="live-label">LIVE</span>
+    <span id="goldRate">Gold 24K: ₹7,245/g</span>
+    <span id="goldTrend" style="color:#4CAF50;font-weight:700;font-size:10px">▲</span>
+    <span class="ticker-sep">|</span>
+    <span>Silver: ₹84/g</span>
+    <span class="ticker-sep">|</span>
+    <span>Platinum: ₹3,120/g</span>
+  </div>
+  <div class="ticker-right">
+    <a href="#">Track Order</a>
+    <a href="#">Store Locator</a>
+    <a href="#">Try at Home</a>
+  </div>
+</div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="main-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="logo">
+        <div class="logo-text">JEWELIA</div>
+        <div class="logo-sub">Fine Jewelry</div>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="#">Rings</a>
+      <a href="#">Earrings</a>
+      <a href="#">Pendants</a>
+      <a href="#">Bangles</a>
+      <a href="#">Chains</a>
+      <a href="#">Collections</a>
+      <a href="#">Gifting</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="icon-btn" id="wishlistIcon" aria-label="Wishlist">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="badge badge-red" id="wishCount" style="display:none">0</span>
+      </button>
+      <button class="icon-btn" aria-label="Cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="badge badge-gold" id="cartCount" style="display:none">0</span>
+      </button>
+      <button class="icon-btn" aria-label="Account">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="search-bar" id="searchBar">
+    <div class="search-bar-inner">
+      <input type="text" placeholder="Search for gold rings, diamond earrings, pendants...">
+      <svg class="search-icon-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+  <div class="hero-slide active" data-idx="0">
+    <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=1400&h=700&fit=crop&q=80" alt="Jewelry collection">
+    <div class="hero-overlay" style="background:linear-gradient(90deg,rgba(26,26,46,0.94) 0%,rgba(26,26,46,0.73) 50%,rgba(26,26,46,0.12) 100%)"></div>
+  </div>
+  <div class="hero-slide" data-idx="1">
+    <img src="https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=1400&h=700&fit=crop&q=80" alt="Wedding collection">
+    <div class="hero-overlay" style="background:linear-gradient(90deg,rgba(46,26,30,0.94) 0%,rgba(46,26,30,0.73) 50%,rgba(46,26,30,0.08) 100%)"></div>
+  </div>
+  <div class="hero-slide" data-idx="2">
+    <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1400&h=700&fit=crop&q=80" alt="Daily wear jewelry">
+    <div class="hero-overlay" style="background:linear-gradient(90deg,rgba(26,36,46,0.94) 0%,rgba(26,36,46,0.73) 50%,rgba(26,36,46,0.08) 100%)"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-tag" id="heroTag">◆ &nbsp;Exclusive Collection</div>
+      <h1 class="hero-title" id="heroTitle">Timeless Elegance,
+Redefined</h1>
+      <p class="hero-subtitle" id="heroSubtitle">Discover handcrafted jewelry that tells your story</p>
+      <div class="hero-buttons">
+        <button class="btn-gold" id="heroCta">Explore Collection <span style="font-size:16px">→</span></button>
+        <button class="btn-ghost">Try at Home</button>
+      </div>
+    </div>
+  </div>
+  <div class="hero-dots" id="heroDots">
+    <button class="hero-dot active" data-idx="0"></button>
+    <button class="hero-dot" data-idx="1"></button>
+    <button class="hero-dot" data-idx="2"></button>
+  </div>
+  <button class="hero-arrow left" id="heroPrev">‹</button>
+  <button class="hero-arrow right" id="heroNext">›</button>
+</section>
+
+<!-- ═══════════ TRUST BAR ═══════════ -->
+<section class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div>
+        <div class="trust-text">BIS Hallmarked</div>
+        <div class="trust-sub">100% Certified Gold</div>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </div>
+      <div>
+        <div class="trust-text">Lifetime Exchange</div>
+        <div class="trust-sub">Upgrade anytime</div>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div>
+        <div class="trust-text">Free Insured Shipping</div>
+        <div class="trust-sub">Safe & secure delivery</div>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+      </div>
+      <div>
+        <div class="trust-text">30-Day Returns</div>
+        <div class="trust-sub">No questions asked</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CATEGORIES ═══════════ -->
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="section-center">
+      <div class="section-tag">Browse By</div>
+      <h2 class="section-title">Shop Categories</h2>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════ COLLECTIONS ═══════════ -->
+<section class="section" style="background:var(--ivory)">
+  <div class="container">
+    <div class="section-center">
+      <div class="section-tag">Curated For You</div>
+      <h2 class="section-title">Featured Collections</h2>
+    </div>
+    <div class="coll-grid" id="collGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════ PRODUCTS ═══════════ -->
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">Handpicked</div>
+        <h2 class="section-title">Trending Now</h2>
+      </div>
+      <a href="#" class="view-all">View All <span>›</span></a>
+    </div>
+    <div class="prod-grid" id="prodGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════ TRY AT HOME ═══════════ -->
+<section class="try-home">
+  <div class="try-home-card">
+    <img src="https://images.unsplash.com/photo-1600721391776-b5cd0e0048f9?w=1400&h=500&fit=crop&q=80" alt="Try at Home service">
+    <div class="try-home-overlay"></div>
+    <div class="try-home-content">
+      <div class="try-home-text">
+        <div class="section-tag">Experience Luxury</div>
+        <h2>Try Jewelry at<br>Your Home</h2>
+        <p>Our expert stylists bring a curated selection of jewelry to your doorstep. Experience the sparkle in person before you decide.</p>
+        <button class="btn-gold">Book Free Appointment</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ REVIEWS ═══════════ -->
+<section class="section" style="background:var(--warm)">
+  <div class="container">
+    <div class="section-center">
+      <div class="section-tag">Loved By Thousands</div>
+      <h2 class="section-title">What Our Customers Say</h2>
+    </div>
+    <div class="review-grid" id="reviewGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════ NEWSLETTER ═══════════ -->
+<section class="newsletter">
+  <div class="newsletter-inner">
+    <div class="section-tag">Stay In The Loop</div>
+    <h2>Never Miss a Sparkle</h2>
+    <p>Subscribe for exclusive offers, new collection launches, and live gold rate alerts.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Enter your email address">
+      <button>Subscribe</button>
+    </div>
+    <div class="newsletter-disclaimer">By subscribing, you agree to our Privacy Policy. Unsubscribe anytime.</div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-text" style="font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:700;letter-spacing:5px;color:#fff;margin-bottom:6px">JEWELIA</div>
+        <div class="logo-sub" style="font-size:8px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:20px">Fine Jewelry</div>
+        <p>Crafting timeless jewelry with love. Every piece tells a story of elegance, tradition, and modern artistry.</p>
+        <div class="footer-social">
+          <div class="social-icon">f</div>
+          <div class="social-icon">in</div>
+          <div class="social-icon">ig</div>
+          <div class="social-icon">yt</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="#">Rings</a><a href="#">Earrings</a><a href="#">Pendants</a>
+        <a href="#">Bangles</a><a href="#">Chains</a><a href="#">Mangalsutra</a><a href="#">All Jewelry</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a><a href="#">Careers</a><a href="#">Press</a>
+        <a href="#">Blog</a><a href="#">Sustainability</a>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <a href="#">Contact Us</a><a href="#">FAQs</a><a href="#">Shipping</a>
+        <a href="#">Returns</a><a href="#">Size Guide</a><a href="#">Track Order</a>
+      </div>
+      <div class="footer-col">
+        <h4>Policies</h4>
+        <a href="#">Privacy Policy</a><a href="#">Terms of Service</a>
+        <a href="#">Refund Policy</a><a href="#">BIS Hallmark</a><a href="#">Pricing</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Jewelia. All rights reserved. BIS Hallmark Certified.</div>
+      <div class="payment-methods">
+        <span class="payment-badge">Visa</span>
+        <span class="payment-badge">Mastercard</span>
+        <span class="payment-badge">UPI</span>
+        <span class="payment-badge">Net Banking</span>
+        <span class="payment-badge">EMI</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════ DATA ═══════════
+const categories = [
+  { name:"Rings", count:"2,400+", img:"https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop&q=80" },
+  { name:"Earrings", count:"3,100+", img:"https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop&q=80" },
+  { name:"Pendants", count:"1,800+", img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop&q=80" },
+  { name:"Bangles", count:"900+", img:"https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=400&fit=crop&q=80" },
+  { name:"Chains", count:"650+", img:"https://images.unsplash.com/photo-1515562141589-67f0d569b6f4?w=400&h=400&fit=crop&q=80" },
+  { name:"Mangalsutra", count:"480+", img:"https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400&h=400&fit=crop&q=80" },
+  { name:"Nose Pins", count:"320+", img:"https://images.unsplash.com/photo-1588444837495-c6cfeb53f32d?w=400&h=400&fit=crop&q=80" },
+  { name:"Bracelets", count:"750+", img:"https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=400&h=400&fit=crop&q=80" },
+];
+
+const collections = [
+  { name:"Daily Wear Under ₹20K", desc:"Elegant pieces for everyday sparkle", img:"https://images.unsplash.com/photo-1515562141589-67f0d569b6f4?w=600&h=400&fit=crop&q=80" },
+  { name:"Wedding Collection", desc:"Make your special day unforgettable", img:"https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=600&h=400&fit=crop&q=80" },
+  { name:"Gifting Specials", desc:"Perfect gifts for every occasion", img:"https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=600&h=400&fit=crop&q=80" },
+  { name:"Men's Collection", desc:"Bold designs for the modern man", img:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=600&h=400&fit=crop&q=80" },
+];
+
+const products = [
+  { name:"Aurora Diamond Ring", price:"₹32,450", oldPrice:"₹36,100", metal:"18K Rose Gold", rating:4.8, reviews:234, badge:"Bestseller", img:"https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=500&h=500&fit=crop&q=80" },
+  { name:"Celestia Stud Earrings", price:"₹18,990", oldPrice:"₹21,200", metal:"14K White Gold", rating:4.9, reviews:412, badge:"New", img:"https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=500&h=500&fit=crop&q=80" },
+  { name:"Eternal Love Pendant", price:"₹24,750", oldPrice:"₹27,500", metal:"18K Yellow Gold", rating:4.7, reviews:189, badge:"Trending", img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&h=500&fit=crop&q=80" },
+  { name:"Royal Heritage Bangle", price:"₹58,900", oldPrice:"₹65,400", metal:"22K Gold", rating:4.6, reviews:98, badge:"", img:"https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&h=500&fit=crop&q=80" },
+  { name:"Whisper Diamond Nose Pin", price:"₹8,450", oldPrice:"₹9,400", metal:"18K White Gold", rating:4.9, reviews:567, badge:"Bestseller", img:"https://images.unsplash.com/photo-1588444837495-c6cfeb53f32d?w=500&h=500&fit=crop&q=80" },
+  { name:"Serene Pearl Earrings", price:"₹14,200", oldPrice:"₹15,800", metal:"14K Rose Gold", rating:4.5, reviews:143, badge:"", img:"https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=500&h=500&fit=crop&q=80" },
+  { name:"Infinity Chain Necklace", price:"₹21,350", oldPrice:"₹23,700", metal:"18K Yellow Gold", rating:4.8, reviews:267, badge:"New", img:"https://images.unsplash.com/photo-1515562141589-67f0d569b6f4?w=500&h=500&fit=crop&q=80" },
+  { name:"Blossom Diamond Ring", price:"₹41,200", oldPrice:"₹45,800", metal:"Platinum", rating:4.9, reviews:321, badge:"Premium", img:"https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=500&h=500&fit=crop&q=80" },
+];
+
+const reviews = [
+  { name:"Priya S.", text:"The quality of craftsmanship is exceptional. My diamond pendant looks even more beautiful in person than on the website!", rating:5, location:"Mumbai", avatar:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&q=80" },
+  { name:"Rahul M.", text:"Bought an engagement ring and the customization options were incredible. The 360° view helped me make the perfect choice.", rating:5, location:"Bangalore", avatar:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&q=80" },
+  { name:"Anita K.", text:"The Try at Home service was a game-changer. The stylist was so helpful and I ended up buying three pieces!", rating:5, location:"Delhi", avatar:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&q=80" },
+];
+
+const heroData = [
+  { title:"Timeless Elegance,\nRedefined", subtitle:"Discover handcrafted jewelry that tells your story", cta:"Explore Collection" },
+  { title:"Wedding\nCollection 2026", subtitle:"Exquisite bridal jewelry for your perfect day", cta:"Shop Bridal" },
+  { title:"Daily Wear\nStarting ₹8,450", subtitle:"Lightweight diamonds designed for everyday luxury", cta:"Shop Now" },
+];
+
+// ═══════════ STATE ═══════════
+let heroIdx = 0;
+let wishlistSet = new Set();
+let cartTotal = 0;
+
+// ═══════════ GOLD RATE TICKER ═══════════
+let goldRate = 7245;
+setInterval(() => {
+  const d = Math.random() > 0.5 ? 1 : -1;
+  goldRate += d * Math.floor(Math.random() * 15);
+  document.getElementById('goldRate').textContent = `Gold 24K: ₹${goldRate.toLocaleString()}/g`;
+  const t = document.getElementById('goldTrend');
+  t.textContent = d > 0 ? '▲' : '▼';
+  t.style.color = d > 0 ? '#4CAF50' : '#f44336';
+}, 5000);
+
+// ═══════════ SEARCH TOGGLE ═══════════
+document.getElementById('searchToggle').addEventListener('click', () => {
+  document.getElementById('searchBar').classList.toggle('active');
+});
+
+// ═══════════ HERO SLIDER ═══════════
+function setHero(idx) {
+  heroIdx = idx;
+  document.querySelectorAll('.hero-slide').forEach((s,i) => s.classList.toggle('active', i===idx));
+  document.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  const h = heroData[idx];
+  document.getElementById('heroTitle').textContent = h.title;
+  document.getElementById('heroSubtitle').textContent = h.subtitle;
+  document.getElementById('heroCta').innerHTML = h.cta + ' <span style="font-size:16px">→</span>';
+}
+document.querySelectorAll('.hero-dot').forEach(d => {
+  d.addEventListener('click', () => setHero(parseInt(d.dataset.idx)));
+});
+document.getElementById('heroPrev').addEventListener('click', () => setHero((heroIdx - 1 + 3) % 3));
+document.getElementById('heroNext').addEventListener('click', () => setHero((heroIdx + 1) % 3));
+setInterval(() => setHero((heroIdx + 1) % 3), 6000);
+
+// ═══════════ RENDER CATEGORIES ═══════════
+document.getElementById('catGrid').innerHTML = categories.map(c => `
+  <div class="cat-card">
+    <div class="cat-img">
+      <img src="${c.img}" alt="${c.name}" loading="lazy">
+      <div class="cat-img-overlay"></div>
+    </div>
+    <div class="cat-info">
+      <div>
+        <div class="cat-name">${c.name}</div>
+        <div class="cat-count">${c.count} designs</div>
+      </div>
+      <span class="cat-arrow">›</span>
+    </div>
+  </div>
+`).join('');
+
+// ═══════════ RENDER COLLECTIONS ═══════════
+document.getElementById('collGrid').innerHTML = collections.map(c => `
+  <div class="coll-card">
+    <img src="${c.img}" alt="${c.name}" loading="lazy">
+    <div class="coll-overlay"></div>
+    <div class="coll-content">
+      <div class="coll-name">${c.name}</div>
+      <div class="coll-desc">${c.desc}</div>
+      <span class="coll-link">EXPLORE ›</span>
+    </div>
+  </div>
+`).join('');
+
+// ═══════════ HELPER: PARSE PRICE ═══════════
+function parsePrice(str) { return parseInt(str.replace(/[₹,]/g,'')); }
+
+// ═══════════ RENDER PRODUCTS ═══════════
+function renderProducts() {
+  document.getElementById('prodGrid').innerHTML = products.map((p,i) => {
+    const cur = parsePrice(p.price), old = parsePrice(p.oldPrice);
+    const off = Math.round((1 - cur/old)*100);
+    const emi = Math.round(cur/12).toLocaleString();
+    const badgeClass = p.badge === 'Bestseller' ? 'badge-bestseller' : p.badge === 'New' ? 'badge-new' : p.badge === 'Trending' ? 'badge-trending' : p.badge === 'Premium' ? 'badge-premium' : '';
+    const wished = wishlistSet.has(i);
+    return `
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        ${p.badge ? `<span class="prod-badge ${badgeClass}">${p.badge}</span>` : ''}
+        <button class="wish-btn ${wished?'active':''}" data-idx="${i}" aria-label="Wishlist">
+          <svg viewBox="0 0 24 24" fill="${wished?'var(--error)':'none'}" stroke="${wished?'var(--error)':'#999'}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="prod-hover-actions">
+          <button class="btn-add-cart" data-idx="${i}">Add to Cart</button>
+          <button class="btn-quick-view">Quick View</button>
+        </div>
+      </div>
+      <div class="prod-info">
+        <div class="prod-metal">${p.metal}</div>
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-rating">
+          <span class="rating-badge"><span class="star">★</span> <span class="rating-num">${p.rating}</span></span>
+          <span class="rating-count">(${p.reviews})</span>
+        </div>
+        <div class="prod-price">
+          <span class="price-current">${p.price}</span>
+          <span class="price-old">${p.oldPrice}</span>
+          <span class="price-off">${off}% off</span>
+        </div>
+        <div class="prod-emi"><span class="emi-dot"></span> EMI from ₹${emi}/mo</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Attach wishlist events
+  document.querySelectorAll('.wish-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.idx);
+      wishlistSet.has(idx) ? wishlistSet.delete(idx) : wishlistSet.add(idx);
+      updateBadges();
+      renderProducts();
+    });
+  });
+
+  // Attach add-to-cart events
+  document.querySelectorAll('.btn-add-cart').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      cartTotal++;
+      updateBadges();
+      btn.textContent = '✓ Added!';
+      setTimeout(() => { btn.textContent = 'Add to Cart'; }, 1200);
+    });
+  });
+}
+renderProducts();
+
+// ═══════════ RENDER REVIEWS ═══════════
+document.getElementById('reviewGrid').innerHTML = reviews.map(r => `
+  <div class="review-card">
+    <div class="review-stars">${'★'.repeat(r.rating)}</div>
+    <div class="review-text">"${r.text}"</div>
+    <div class="review-author">
+      <div class="review-person">
+        <img class="review-avatar" src="${r.avatar}" alt="${r.name}" loading="lazy">
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-verified">✓ Verified Buyer</div>
+        </div>
+      </div>
+      <div class="review-location">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${r.location}
+      </div>
+    </div>
+  </div>
+`).join('');
+
+// ═══════════ UPDATE BADGES ═══════════
+function updateBadges() {
+  const wc = document.getElementById('wishCount');
+  const cc = document.getElementById('cartCount');
+  if (wishlistSet.size > 0) { wc.style.display = 'flex'; wc.textContent = wishlistSet.size; }
+  else { wc.style.display = 'none'; }
+  if (cartTotal > 0) { cc.style.display = 'flex'; cc.textContent = cartTotal; }
+  else { cc.style.display = 'none'; }
+}
+</script>
+
+</body>
+</html>
